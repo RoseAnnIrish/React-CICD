@@ -1,17 +1,18 @@
+
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
+import CreateNote from "./CreateNote";
 import DetailNote from "./DetailNote";
 import UpdateNote from "./UpdateNote";
-import CreateNote from "./CreateNote";
 import {baseUrl} from "../constants";
 
 function ListNotes(props) {
-    const [notes,setNotes] = useState([])
+    const [notes, setNotes] = useState([])
     useEffect(() => {
         let config = {
             method: 'get',
             maxBodyLength: Infinity,
-            url: 'http://127.0.0.1:8000/notes/notes/',
+            url: baseUrl + 'notes/notes/',
             headers: {}
         };
 
@@ -23,14 +24,13 @@ function ListNotes(props) {
             .catch((error) => {
                 console.log(error);
             });
-    },
-        [notes]);
+    }, [notes]);
 
     function deleteNote(note_id) {
         let config = {
             method: 'delete',
             maxBodyLength: Infinity,
-            url: baseUrl + 'notes/notes/1/',
+            url: baseUrl + 'notes/notes/' + note_id + '/',
             headers: {}
         };
 
@@ -41,7 +41,6 @@ function ListNotes(props) {
             .catch((error) => {
                 console.log(error);
             });
-
     }
 
     return (
@@ -51,7 +50,7 @@ function ListNotes(props) {
                 <div key={note.id}>
                     <DetailNote note_id={note.id}/>
                     <UpdateNote note_id={note.id}/>
-                    <button onClick={deleteNote}>Delete</button>
+                    <button onClick={() => deleteNote(note.id)}>Delete</button>
                 </div>
             ))}
 
